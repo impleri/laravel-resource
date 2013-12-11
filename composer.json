@@ -1,0 +1,22 @@
+{
+    "name": "impleri/laravel-resource",
+    "type": "library",
+    "description": "Alternative RESTful resource implementation for Laravel.",
+    "license": "BSD",
+    "keywords": ["laravel", "laravel 4", "rest"],
+    "authors": [
+        {
+            "name": "Christopher Roussel",
+            "email": "christopher@impleri.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.0.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Impleri\\Resource": "src/"
+        }
+    }
+}
