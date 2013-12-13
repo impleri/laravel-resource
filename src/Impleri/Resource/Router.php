@@ -17,7 +17,7 @@ class Router
      * @param  array  $resources Array of resources indexed by resource name.
      * @param  string $prefix    Route prefix to prepend to resource routes.
      */
-    public static function group($resources, $prefix = 'resources')
+    public static function resources($resources, $prefix = 'resources')
     {
         Route::group(
             array('prefix' => $prefix),
@@ -33,7 +33,9 @@ class Router
                         $name = $data['class'];
                     }
 
-                    self::resource($name, $data);
+                    $controller = $data['class'];
+
+                    self::resource($name, $controller, $data);
                 }
             }
         );
@@ -46,15 +48,12 @@ class Router
      * @param  string $resource Resource name
      * @param  array  $data     Resource route options
      */
-    public static function resource($resource, $data = array())
+    public static function resource($resource, $controller, array $options = array())
     {
-        $controller = (isset($data['class'])) ? $data['class'] : $resource;
-        $hasItems = (isset($data['hasItems'])) ? $data['hasItems'] : true;
-        $putCollction = (isset($data['allowSaveAll'])) ? $data['allowSaveAll'] : true;
-        $deleteCollction = (isset($data['allowDeleteAll'])) ? $data['allowDeleteAll'] : false;
-        $pluralize = (isset($data['pluralize'])) ? $data['pluralize'] : true;
-        $addToCollection = (isset($data['collectionForm'])) ? $data['collectionForm'] : 'create';
-        $editElement = (isset($data['elementForm'])) ? $data['elementForm'] : 'edit';
+        $pluralize = (isset($options['pluralize'])) ? $options['pluralize'] : true;
+        $hasItems = (isset($options['accessItems'])) ? $options['accessItems'] : true;
+        $putCollection = (isset($options['allowSaveAll'])) ? $options['allowSaveAll'] : false;
+        $deleteCollection = (isset($options['allowDeleteAll'])) ? $options['allowDeleteAll'] : false;
 
         if ($pluralize) {
             $resource = Str::plural($resource);
@@ -62,31 +61,23 @@ class Router
 
         $collection_fmt = $controller . '@%sCollection';
         Route::get($resource, sprintf($collection_fmt, 'get'));
-        Route::post($resource, sprintf($collection_fmt, 'post'));
 
-        if ($putCollction) {
+        if ($putCollection) {
             Route::put($resource, sprintf($collection_fmt, 'put'));
         }
 
-        if ($deleteCollction) {
+        if ($deleteCollection) {
             Route::delete($resource, sprintf($collection_fmt, 'delete'));
-        }
-
-        if ($addToCollection) {
-            Route::get($resource . '/' . $addToCollection, sprintf($collection_fmt, 'addTo'));
         }
 
         if ($hasItems) {
             $element = sprintf('%1$s/{%1$s}', $resource);
             $element_fmt = $controller . '@%sElement';
             Route::get($element, sprintf($element_fmt, 'get'));
+            Route::post($resource, sprintf($collection_fmt, 'post'));
             Route::post($element, sprintf($element_fmt, 'post'));
             Route::put($element, sprintf($element_fmt, 'put'));
             Route::delete($element, sprintf($element_fmt, 'delete'));
-
-            if ($editElement) {
-                Route::get($element . '/' . $editElement, sprintf($element_fmt, 'edit'));
-            }
         }
     }
 }
