@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
  *
  * Provides some simple actions to map
  */
-trait BaseResource
+trait Resource
 {
     /**
      * The default output format to use.
