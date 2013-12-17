@@ -17,15 +17,6 @@ interface Collection
     public function getCollection();
 
     /**
-     * Post Collection
-     *
-     * Processes input to create an individual item within the collection.
-     * Corresponds to the RESTful POST action for the collection.
-     * @return \Illuminate\Http\Response Laravel response
-     */
-    public function postCollection();
-
-    /**
      * Put Collection
      *
      * Processes input to overwrite the entire collection. Corresponds to the

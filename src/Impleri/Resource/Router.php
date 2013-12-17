@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Route;
 class Router
 {
     /**
-     * Group Routes
+     * Group Resources
      *
      * Construct routes to resources.
      * @param  array  $resources Array of resources indexed by resource name.
      * @param  string $prefix    Route prefix to prepend to resource routes.
      */
-    public static function resources($resources, $prefix = 'resources')
+    public static function group($resources, $prefix = 'resources')
     {
         Route::group(
             array('prefix' => $prefix),
@@ -25,33 +25,38 @@ class Router
                 foreach ($resources as $name => $data) {
                     if (!is_array($data)) {
                         $data = array(
-                            'class' => $data
+                            'controller' => $data
                         );
                     }
 
                     if (is_numeric($name)) {
-                        $name = $data['class'];
+                        $name = $data['controller'];
                     }
 
-                    $controller = $data['class'];
+                    $controller = $data['controller'];
 
-                    self::resource($name, $controller, $data);
+                    if (isset($data['isCollection']) && $data['isCollection']) {
+                        self::collection($name, $controller, $data);
+                    }
+
+                    if (isset($data['isElement']) && $data['isElement']) {
+                        self::element($name, $controller, $data);
+                    }
                 }
             }
         );
     }
 
     /**
-     * Route Resource
+     * Route Collection
      *
-     * Construct the routes for a resource.
+     * Construct the routes for a resource collection.
      * @param  string $resource Resource name
      * @param  array  $data     Resource route options
      */
-    public static function resource($resource, $controller, array $options = array())
+    public static function collection($resource, $controller, array $options = array())
     {
         $pluralize = (isset($options['pluralize'])) ? $options['pluralize'] : true;
-        $hasItems = (isset($options['accessItems'])) ? $options['accessItems'] : true;
         $putCollection = (isset($options['allowSaveAll'])) ? $options['allowSaveAll'] : false;
         $deleteCollection = (isset($options['allowDeleteAll'])) ? $options['allowDeleteAll'] : false;
 
@@ -69,15 +74,31 @@ class Router
         if ($deleteCollection) {
             Route::delete($resource, sprintf($collection_fmt, 'delete'));
         }
+    }
 
-        if ($hasItems) {
-            $element = sprintf('%1$s/{%1$s}', $resource);
-            $element_fmt = $controller . '@%sElement';
-            Route::get($element, sprintf($element_fmt, 'get'));
-            Route::post($resource, sprintf($collection_fmt, 'post'));
-            Route::post($element, sprintf($element_fmt, 'post'));
-            Route::put($element, sprintf($element_fmt, 'put'));
-            Route::delete($element, sprintf($element_fmt, 'delete'));
+    /**
+     * Route Element
+     *
+     * Construct the routes for a resource element.
+     * @param  string $resource Resource name
+     * @param  array  $data     Resource route options
+     */
+    public static function element($resource, $controller, array $options = array())
+    {
+        $pluralize = (isset($options['pluralize'])) ? $options['pluralize'] : true;
+
+        if ($pluralize) {
+            $resource = Str::plural($resource);
         }
+
+        $collection_fmt = $controller . '@%sCollection';
+
+        $element = sprintf('%1$s/{%1$s}', $resource);
+        $element_fmt = $controller . '@%sElement';
+        Route::get($element, sprintf($element_fmt, 'get'));
+        Route::post($resource, sprintf($collection_fmt, 'post'));
+        Route::post($element, sprintf($element_fmt, 'post'));
+        Route::put($element, sprintf($element_fmt, 'put'));
+        Route::delete($element, sprintf($element_fmt, 'delete'));
     }
 }

@@ -18,6 +18,15 @@ interface Element
     public function getElement($rid = 0);
 
     /**
+     * Post Collection
+     *
+     * Processes input to create an individual item within the collection.
+     * Corresponds to the RESTful POST action for the collection.
+     * @return \Illuminate\Http\Response Laravel response
+     */
+    public function postCollection();
+
+    /**
      * Post Item
      *
      * Processes input from older browsers to properly route a RESTful request.
