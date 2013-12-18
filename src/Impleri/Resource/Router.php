@@ -48,7 +48,7 @@ class Router
 
                     // Assume an element if neither is specified
                     if (!isset($data['isCollection']) && !isset($data['isElement'])) {
-                        isset($data['isElement']) = true;
+                        $data['isElement'] = true;
                     }
 
                     if (isset($data['isCollection']) && $data['isCollection']) {
