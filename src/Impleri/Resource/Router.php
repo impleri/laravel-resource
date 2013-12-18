@@ -17,11 +17,18 @@ class Router
      * @param  array  $resources Array of resources indexed by resource name.
      * @param  string $prefix    Route prefix to prepend to resource routes.
      */
-    public static function group($resources, $prefix = 'resources')
+    public static function resources($resources, $options = array())
     {
+        if (!isset($options['prefix'])) {
+            $options['prefix'] = 'resources';
+        }
+        if (!isset($options['pattern'])) {
+            $options['pattern'] = '%sController';
+        }
+
         Route::group(
-            array('prefix' => $prefix),
-            function () use ($resources) {
+            $options,
+            function () use ($resources, $options) {
                 foreach ($resources as $name => $data) {
                     if (!is_array($data)) {
                         $data = array(
@@ -29,11 +36,20 @@ class Router
                         );
                     }
 
+                    if (!isset($data['controller'])) {
+                        $data['controller'] = sprintf($options['pattern'], Str::studly($name));
+                    }
+
                     if (is_numeric($name)) {
                         $name = $data['controller'];
                     }
 
                     $controller = $data['controller'];
+
+                    // Assume an element if neither is specified
+                    if (!isset($data['isCollection']) && !isset($data['isElement'])) {
+                        isset($data['isElement']) = true;
+                    }
 
                     if (isset($data['isCollection']) && $data['isCollection']) {
                         self::collection($name, $controller, $data);
@@ -57,7 +73,7 @@ class Router
     public static function collection($resource, $controller, array $options = array())
     {
         $pluralize = (isset($options['pluralize'])) ? $options['pluralize'] : true;
-        $putCollection = (isset($options['allowSaveAll'])) ? $options['allowSaveAll'] : false;
+        $putCollection = (isset($options['allowPutAll'])) ? $options['allowPutAll'] : false;
         $deleteCollection = (isset($options['allowDeleteAll'])) ? $options['allowDeleteAll'] : false;
 
         if ($pluralize) {
