@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Impleri\\Resource": "src/"
+            "Impleri\\Resource\\": "src/"
         }
     }
 }
