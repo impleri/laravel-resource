@@ -2,7 +2,7 @@
     "name": "impleri/laravel-resource",
     "type": "library",
     "description": "Alternative RESTful resource implementation for Laravel.",
-    "license": "BSD",
+    "license": "BSD-2-Clause",
     "keywords": ["laravel", "laravel 4", "rest"],
     "authors": [
         {
