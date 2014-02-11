@@ -81,14 +81,14 @@ class Router
         }
 
         $collection_fmt = $controller . '@%sCollection';
-        Route::get($resource, sprintf($collection_fmt, 'get'));
+        Route::get($resource, sprintf($collection_fmt, 'get'));           // list
 
         if ($putCollection) {
-            Route::put($resource, sprintf($collection_fmt, 'put'));
+            Route::put($resource, sprintf($collection_fmt, 'put'));       // replace
         }
 
         if ($deleteCollection) {
-            Route::delete($resource, sprintf($collection_fmt, 'delete'));
+            Route::delete($resource, sprintf($collection_fmt, 'delete')); // delete
         }
     }
 
@@ -111,10 +111,10 @@ class Router
 
         $element = sprintf('%1$s/{%1$s}', $resource);
         $element_fmt = $controller . '@%sElement';
-        Route::get($element, sprintf($element_fmt, 'get'));
-        Route::post($resource, sprintf($collection_fmt, 'post'));
-        Route::post($element, sprintf($element_fmt, 'post'));
-        Route::put($element, sprintf($element_fmt, 'put'));
-        Route::delete($element, sprintf($element_fmt, 'delete'));
+        Route::get($element, sprintf($element_fmt, 'get'));       // read
+        Route::post($resource, sprintf($collection_fmt, 'post')); // create
+        Route::post($element, sprintf($element_fmt, 'post'));     // [deprecated]
+        Route::put($element, sprintf($element_fmt, 'put'));       // update
+        Route::delete($element, sprintf($element_fmt, 'delete')); // delete
     }
 }
