@@ -1,9 +1,9 @@
 {
     "name": "impleri/laravel-resource",
     "type": "library",
-    "description": "Alternative RESTful resource implementation for Laravel.",
+    "description": "Alternative API-only RESTful resource implementation for Laravel.",
     "license": "BSD-2-Clause",
-    "keywords": ["laravel", "laravel 4", "rest"],
+    "keywords": ["laravel", "laravel 4", "rest", "json"],
     "authors": [
         {
             "name": "Christopher Roussel",
@@ -12,7 +12,16 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "~4.0"
+        "illuminate/support": "4.1.*",
+        "illuminate/database": "4.1.*",
+        "impleri/laravel-toolbox": "~1.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.8.0",
+        "phpunit/phpunit": "3.7.*"
+    },
+    "suggests": {
+        "laravelbook/ardent": ""
     },
     "autoload": {
         "psr-4": {

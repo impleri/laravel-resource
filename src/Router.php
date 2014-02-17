@@ -1,6 +1,7 @@
 <?php namespace Impleri\Resource;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -16,6 +17,7 @@ class Router
      * Construct routes to resources.
      * @param  array  $resources Array of resources indexed by resource name.
      * @param  string $prefix    Route prefix to prepend to resource routes.
+     * @deprecated  since 1.0
      */
     public static function resources($resources, $options = array())
     {
@@ -69,6 +71,7 @@ class Router
      * Construct the routes for a resource collection.
      * @param  string $resource Resource name
      * @param  array  $data     Resource route options
+     * @deprecated  since 1.0
      */
     public static function collection($resource, $controller, array $options = array())
     {
@@ -98,6 +101,7 @@ class Router
      * Construct the routes for a resource element.
      * @param  string $resource Resource name
      * @param  array  $data     Resource route options
+     * @deprecated  since 1.0
      */
     public static function element($resource, $controller, array $options = array())
     {

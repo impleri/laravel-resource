@@ -1,11 +1,11 @@
-<?php namespace Impleri\Resource\Interfaces;
+<?php namespace Impleri\Resource\Contracts;
 
 /**
  * Collection Resource Interface
  *
  * Define required methods for handling collections RESTfully.
  */
-interface Collection
+interface CollectionInterface
 {
     /**
      * Get Collection
@@ -15,6 +15,16 @@ interface Collection
      * @return \Illuminate\Http\Response Laravel response
      */
     public function getCollection();
+
+    /**
+     * Post Collection
+     *
+     * Processes input to create an individual item within the collection.
+     * Corresponds to the RESTful POST action for the collection.
+     * This definition is mirrored in ElementInterface.
+     * @return \Illuminate\Http\Response Laravel response
+     */
+    public function postCollection();
 
     /**
      * Put Collection

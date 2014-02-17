@@ -1,4 +1,4 @@
-<?php namespace Impleri\Resource\Traits;
+<?php namespace Impleri\Resource;
 
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Request;
@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
  *
  * Provides some simple actions to map
  */
-trait Resource
+trait ResourceTrait
 {
     /**
      * The default output format to use.
@@ -95,14 +95,21 @@ trait Resource
      * @param  string $view The view to render
      * @return \Illuminate\Http\Response Laravel response
      */
-    protected function notSupported($view = 'errors.405')
+    protected function notSupported($message = '', $view = 'errors.405', $status = 405)
     {
+        if (empty($message)) {
+            $message = 'This resource does not support this method';
+        }
+
+        if (!is_array($message)) {
+            $message = [$message];
+        }
+
         $data = array(
             'success' => false,
-            'errors' => array(
-                'This resource does not support this method'
-            ),
+            'errors' => $message,
         );
-        return $this->respond($data, $view, 405);
+
+        return $this->respond($data, $view, $status);
     }
 }
