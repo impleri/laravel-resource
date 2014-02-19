@@ -14,7 +14,7 @@
         "php": ">=5.4.0",
         "illuminate/support": "4.1.*",
         "illuminate/database": "4.1.*",
-        "impleri/laravel-toolbox": "~1.0"
+        "impleri/laravel-toolbox": "@dev"
     },
     "require-dev": {
         "mockery/mockery": "0.8.0",
