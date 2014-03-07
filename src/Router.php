@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
  * Router Helper
  *
  * Small class to extend Router functions
+ * @deprecated  since 1.0
  */
 class Router
 {

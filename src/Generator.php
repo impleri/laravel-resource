@@ -3,6 +3,7 @@
 use BadFunctionCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View;
 
 /**
  * Generator Helper
@@ -92,7 +93,7 @@ class Generator
         }
 
         // Pass options to the view and return the rendered string
-        return app()['view']->make('resource::routes', $options)->render();
+        return View::make('resource::routes', $options)->render();
     }
 
     /**
@@ -117,8 +118,9 @@ class Generator
      * Files
      *
      * Generic method to generate resource class files produced through toolbox commands.
-     * @param  array $options Variables to pass to the view
-     * @return int            Number of controllers written
+     * @param  array  $options Variables to pass to the view
+     * @param  string $view    Name of view file to use in rendering
+     * @return int             Number of controllers written
      * @throws BadFunctionCallException If missing element/collection from $options
      */
     private static function files($options, $view)
@@ -178,7 +180,7 @@ class Generator
             }
 
             // Generate the contents
-            $contents = app()['view']->make($view, $data)->render();
+            $contents = View::make($view, $data)->render();
 
             // Remove the old backup
             if (File::exists($saveTo . '.bak.php')) {
