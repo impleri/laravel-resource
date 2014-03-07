@@ -1,15 +1,22 @@
 <?php
 
 use \Mockery;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
+use Impleri\Resource\RouteGenerator;
+use Impleri\Resource\Facades\RouteGenerator as RouteGeneratorFacade;
 
 class GenerateRoutesTest extends PHPUnit_Framework_TestCase
 {
     protected static $output = 'test success';
 
-    protected static $params = ['element' => 'test'];
+    protected static $params = [
+        'element' => 'test'
+    ];
+
+    public function setUp()
+    {
+        $this->unit = new RouteGenerator;
+    }
 
     /**
      * Tear Down
@@ -21,15 +28,22 @@ class GenerateRoutesTest extends PHPUnit_Framework_TestCase
         Mockery::close();
     }
 
+    public function testFacadeResponds()
+    {
+        RouteGeneratorFacade::shouldReceive('execute')
+            ->andReturn(true);
+        RouteGeneratorFacade::execute();
+    }
+
     /**
      * Routes Have Valid Parameters
      *
      * Ensure BuildCommand fires correctly.
+     * @expectedException BadFunctionCallException
      */
     public function testRoutesValidatesInput()
     {
-        $this->setExpectedException('BadFunctionCallException');
-        Impleri\Resource\Generator::routes([]);
+        $this->unit->execute([]);
     }
 
     /**
@@ -41,7 +55,9 @@ class GenerateRoutesTest extends PHPUnit_Framework_TestCase
     {
         View::shouldReceive('make->render')
             ->andReturn(static::$output);
-        $result = Impleri\Resource\Generator::routes(self::$params);
+
+        $result = $this->unit->execute(self::$params);
+
         $this->assertEquals($result, self::$output);
     }
 }

@@ -17,4 +17,21 @@ class ResourceServiceProvider extends ServiceProvider
     {
         $this->package('impleri/resource', null, realpath(__DIR__));
     }
+
+    public function register()
+    {
+        App::bind(
+            'resource.controller',
+            function () {
+            return new ControllerGenerator;
+            }
+        );
+
+        App::bind(
+            'resource.route',
+            function () {
+            return new RouteGenerator;
+            }
+        );
+    }
 }
