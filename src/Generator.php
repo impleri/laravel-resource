@@ -41,7 +41,7 @@ abstract class Generator implements GeneratorInterface
     public function execute($options)
     {
         $count = 0;
-        $this->fillOptions($options);
+        $options = $this->fillOptions($options);
 
         foreach ($options['classes'] as $name => $class) {
             $data = $this->fillClass($name, $class, $options);
@@ -71,7 +71,7 @@ abstract class Generator implements GeneratorInterface
      * @param  array  $options Variables to pass to the view
      * @throws BadFunctionCallException If missing element/collection from $options
      */
-    protected function fillOptions(&$options)
+    protected function fillOptions($options)
     {
         // Need at least a name to use
         if (!isset($options['classes']) || empty($options['classes'])) {
@@ -93,6 +93,8 @@ abstract class Generator implements GeneratorInterface
         $basePath = $options['basePath'];
         $basePath .= (empty($baseNamespace)) ? '' : str_replace('\\', '/', $baseNamespace);
         $options['basePath'] = $basePath;
+
+        return $options;
     }
 
     /**
@@ -120,7 +122,7 @@ abstract class Generator implements GeneratorInterface
             $name = $class['name'];
         }
 
-        if (!isset($name) || is_numeric($name)) {
+        if (!isset($name) || is_numeric($name) || empty($name)) {
             throw new BadFunctionCallException('Every class must have a name.');
         }
 
