@@ -22,9 +22,10 @@ class RouteGenerator extends Generator
      *
      * Boilerplate method to inflate generator options using defaults.
      * @param  array  $options Variables to pass to the view
+     * @return array           Options
      * @throws BadFunctionCallException If missing element/collection from $options
      */
-    protected function fillOptions(&$options)
+    protected function fillOptions($options)
     {
         // Need at least a name to use
         if (!isset($options['collection']) && !isset($options['element'])) {
@@ -35,6 +36,8 @@ class RouteGenerator extends Generator
         if (!isset($options['basePath'])) {
             $options['basePath'] = $this->path;
         }
+
+        $options['basePath'] = $this->trailingSeparator($options['basePath']);
 
         if (!isset($options['collection'])) {
             // Pluralize the element
@@ -68,6 +71,8 @@ class RouteGenerator extends Generator
         if (!isset($options['allowDeleteAll'])) {
             $options['allowDeleteAll'] = false;
         }
+
+        return $options;
     }
 
     /**
@@ -79,7 +84,7 @@ class RouteGenerator extends Generator
      */
     public function execute($options)
     {
-        $this->fillOptions($options);
+        $options = $this->fillOptions($options);
 
         // Pass options to the view and return the rendered string
         return View::make($this->view, $options)->render();

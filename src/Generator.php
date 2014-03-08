@@ -53,11 +53,11 @@ abstract class Generator implements GeneratorInterface
             $contents = View::make($view, $data)->render();
 
             // Remove the old backup
-            if (!$this->save($data['file'], $contents)) {
+            if ($this->save($data['file'], $contents)) {
+                $count++;
+            } else {
                 // Some kind of warning here
             }
-
-            $count++;
         }
 
         // Return count to the toolbox
@@ -89,9 +89,13 @@ abstract class Generator implements GeneratorInterface
         }
 
         // Flesh out the base path
+        $basePath = $this->trailingSeparator($options['basePath']);
+
+        // Add base namespace to base path
         $baseNamespace = $options['baseNamespace'];
-        $basePath = $options['basePath'];
-        $basePath .= (empty($baseNamespace)) ? '' : str_replace('\\', '/', $baseNamespace);
+        $basePath .= (empty($baseNamespace)) ? '' : $this->convertNamespace($baseNamespace);
+        $basePath = $this->trailingSeparator($basePath);
+
         $options['basePath'] = $basePath;
 
         return $options;
@@ -109,13 +113,18 @@ abstract class Generator implements GeneratorInterface
     protected function fillClass($name, $class, $options)
     {
         $namespace = $options['baseNamespace'];
-        $saveTo = $options['basePath'];
+        $saveTo = $this->trailingSeparator($options['basePath']);
 
         // Add to the save path and namespace
         if (isset($class['subNamespace'])) {
+            if (!empty($namespace)) {
+                $namespace = $this->trailingSeparator($namespace, '\\');
+            }
             $namespace .= $class['subNamespace'];
-            $saveTo .= str_replace('\\', '/', $class['subNamespace']);
+            $saveTo .= $this->convertNamespace($class['subNamespace']);
         }
+
+        $saveTo = $this->trailingSeparator($saveTo);
 
         // Override the class name with the array value
         if (isset($class['name'])) {
@@ -171,5 +180,34 @@ abstract class Generator implements GeneratorInterface
         }
 
         return $success;
+    }
+
+    /**
+     * Trailing Separator
+     *
+     * Ensures there is a trailing separator on a string
+     * @param  string $string String to test
+     * @param  string $end    Separator to append
+     * @return string         Modified string
+     */
+    protected function trailingSeparator($string, $end = '/')
+    {
+        if (substr($string, -strlen($end)) !== $end) {
+            $string .= $end;
+        }
+
+        return $string;
+    }
+
+    /**
+     * Convert Namespace
+     *
+     * Convert backslash from namespace to forward slash for file path.
+     * @param  string $string Namespace to convert.
+     * @return string         Namespace converted to a path.
+     */
+    protected function convertNamespace($string)
+    {
+        return str_replace('\\', '/', $string);
     }
 }
