@@ -2,11 +2,8 @@ Laravel REST API Library
 ========================
 
 [![Build Status](https://travis-ci.org/impleri/laravel-resource.png?branch=master)](https://travis-ci.org/impleri/laravel-resource)
-
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/impleri/laravel-resource/badges/quality-score.png?s=a2f2da02db7ae7e8f2fe395d2e83d4659ccbbf76)](https://scrutinizer-ci.com/g/impleri/laravel-resource/)
-
 [![Code Coverage](https://scrutinizer-ci.com/g/impleri/laravel-resource/badges/coverage.png?s=2ccdf1fcdc1af0403df59f59a757fe052c504ac6)](https://scrutinizer-ci.com/g/impleri/laravel-resource/)
-
 [![Dependency Status](https://www.versioneye.com/user/projects/531a85fcec13755bfa000aeb/badge.png)](https://www.versioneye.com/user/projects/531a85fcec13755bfa000aeb)
 
 

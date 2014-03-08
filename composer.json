@@ -10,7 +10,7 @@
             "email": "christopher@impleri.net"
         }
     ],
-    "minimum-stability": "rc",
+    "minimum-stability": "RC",
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.1.*",
@@ -23,7 +23,7 @@
         "codeception/specify": "~0.3.4",
         "codeception/verify": "~0.2.7"
     },
-    "suggests": {
+    "suggest": {
         "laravelbook/ardent": "~2.4"
     },
     "autoload": {
