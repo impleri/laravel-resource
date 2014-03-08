@@ -10,6 +10,7 @@
             "email": "christopher@impleri.net"
         }
     ],
+    "minimum-stability": "rc",
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "4.1.*",
@@ -17,8 +18,10 @@
         "impleri/laravel-toolbox": "~1.0.0"
     },
     "require-dev": {
-        "mockery/mockery": "~0.8.0",
-        "phpunit/phpunit": "~3.7.0"
+        "mockery/mockery": "~0.9.0",
+        "phpunit/phpunit": "~3.7.0",
+        "codeception/specify": "~0.3.4",
+        "codeception/verify": "~0.2.7"
     },
     "suggests": {
         "laravelbook/ardent": "~2.4"
