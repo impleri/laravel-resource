@@ -34,6 +34,12 @@ class Base
     protected $model = 'Model';
 
     /**
+     * Output data collector.
+     * @var array
+     */
+    protected $data = [];
+
+    /**
      * Constructor
      */
     public function __construct($elementName = 'item', $collectionName = '')
